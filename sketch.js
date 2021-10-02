@@ -10,7 +10,7 @@ var hour;
 var bg = "sunrise.png";
 
 function preload() {
-    getBackgroundImg(bg);
+    getBackgroundImg();
     
 }
 
@@ -29,12 +29,13 @@ function draw(){
 
     fill("black");
     textSize(30);
-    
-    if(hour>=12){
+//    console.log(hour)
+
+    if(hour>=12 && hour<=24){
         text("Time : "+ hour%12 + " PM", 50,100);
     }else if(hour==0){
         text("Time : 12 AM",100,100);
-    }else{
+    }else if(hour>0 && hour<=12){
         text("Time : "+ hour%12 + " AM", 50,100);
     }
 
@@ -43,28 +44,28 @@ function draw(){
 async function getBackgroundImg(){
 
     // write code to fetch time from API
-    var response= await fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata")
+    var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata")
 
- 
     //change the data in JSON format and store it in variable responseJSON
     var responseJSON=await response.json()
     console.log (responseJSON)
-
     
     //fetch datetime from responseJSON
     var datetime=responseJSON.datetime
     console.log(datetime)
     
-
     // slice the datetime to extract hour
     
-hour=datetime.slice(11,13)
+    hour = datetime.slice(11,13)
+    console.log(hour)
+    hour=int(hour)
+    console.log(hour)
     
-    if(hour>=0 && hour<18 ){
+    if(hour >= 6 && hour < 18 ){
         bg = "sunrise.png";
     }
     else{
-        bg="sunset.png"
+        bg = "sunset.png";
     }
     
     backgroundImg = loadImage(bg);
